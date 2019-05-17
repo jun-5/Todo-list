@@ -15,7 +15,9 @@
   .todo-item:hover .remove {
     opacity: 1;
   }
-  
+  .todo-item:hover .edit {
+    opacity: 1;
+  }
   /* todo-item 사이에 윗 테두리 */
   .todo-item + .todo-item {
     border-top: 1px solid #f1f3f5;
@@ -29,11 +31,19 @@
     opacity: 0;
   }
   
+  .edit {
+    margin-right: 1rem;
+    color: #8b8a2a;
+    font-weight: 600;
+    opacity: 0;
+  }
+
   .todo-text {
     flex: 1; /* 체크, 엑스를 제외한 공간 다 채우기 */
     word-break: break-all;
   }
   
+
   .checked {
     text-decoration: line-through;
     color: #adb5bd;
@@ -45,4 +55,19 @@
     margin-left: 1rem;
     color: #3bc9db;
     font-weight: 800;
+  }
+
+  .title_out {
+    font-size: 1rem;
+    font-weight: 900;
+    color:#3e09a0;
+    margin-right:1rem;
+  }
+
+  
+  .text_out {
+    font-size: 1rem;
+    font-weight: 300;
+    color:#505688;
+    margin-right:1rem;
   }

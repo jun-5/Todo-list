@@ -6,31 +6,50 @@ import TodoItemList from './components/TodoItemList'
 
 class App extends Component{
   
-  id=3;
-
   state={
-    input: '',
+    nextid:3,
+    input_text:'',
+    input_title:'',
+    selectedId:4,
     todos: [
-      { id:0, text: '원녕이 놀아주기', checked: false},
-      { id:1, text: '원녕이 꽃사주기', checked: true},
-      { id:2, text: '아트박스절대안가기', checked: false}
+      { id:0, title:"제목1", text: '여기가 아이디', checked: false},
+      { id:1, title:"제목2",text: '부분 ', checked: true},
+      { id:2, title:"제목3",text: '입니다', checked: false}
     ]
   }
 
-  handleChange = (e) =>{
+
+
+  handleChange_title = (e) =>{
     this.setState({
-      input: e.target.value //input 의 다음 바뀔 값.
+      input_title: e.target.value //input 의 다음 바뀔 값.
     })
   }
 
-  handleCreate = () =>{
-    const { input, todos} = this.state;
+  handleChange_text = (e) =>{
     this.setState({
-      input:'',
+      input_text:e.target.value
+    })
+  }
+
+
+
+  handleCreate = () =>{
+    const { input_text,input_title, todos} = this.state;
+    if(input_title === '' ){          
+      return;
+    }
+    if(input_text === ''){
+      return;
+    }
+    this.setState({
+      input_text:'',
+      input_title:'',
       todos:todos.concat({
-        id: this.id++,
-        text: input,
-        checked: false
+        id: this.state.nextid++,
+        text: input_text,
+        title:input_title,
+        checked: false,
       })
     });
   }
@@ -40,7 +59,28 @@ class App extends Component{
     if(e.key === 'Enter'){
       this.handleCreate();
     }
+    ;
   }
+  
+  handleEdit = (id,text) =>{
+    const { todos } = this.state;
+
+    const index = todos.findIndex(todo => todo.id === id);
+    const selected = todos[index];
+    
+    const nextTodos = [...todos];
+
+    nextTodos[index] = {
+      ...selected,
+      text: text,
+    };
+
+    this.setState({
+      todos: nextTodos
+    });
+
+  }
+
 
   handleToggle = (id) => {
     const { todos } = this.state;
@@ -58,7 +98,14 @@ class App extends Component{
     this.setState({
       todos: nextTodos
     });
+    console.log("EditToggle",todos)
+
   }
+
+
+  
+
+  
 
   handleRemove = (id) => {
     const { todos } = this.state;
@@ -67,26 +114,34 @@ class App extends Component{
     });
   }
 
+
   render(){
-    const { input, todos } = this.state;
+    const { input_text,input_title, todos } = this.state;
     const {
-      handleChange,
+      handleChange_text,
       handleCreate,
       handleKeyPress,
       handleToggle,
-      handleRemove
+      handleRemove,
+      handleChange_title,
+      handleEdit
     } = this;
+
+
 
     return(
       <TodoListTemplate form={(
       <Form
-        value= {input}
+        value_text= {input_text}
+        value_title = {input_title}
         onKeyPress={handleKeyPress}
-        onChange={handleChange}
+        onChange_text={handleChange_text}
+        onChange_title={handleChange_title}
         onCreate={handleCreate}
       />
       )}>
-      <TodoItemList todos={todos} onToggle = {handleToggle} onRemove ={handleRemove}/>
+      <TodoItemList todos={todos} onToggle = {handleToggle} onRemove ={handleRemove} onChange_text={handleChange_text} onChange_title={handleChange_title} onEdit={handleEdit}/>
+      
         </TodoListTemplate>
     )
   }
